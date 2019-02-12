@@ -9,10 +9,16 @@ var linuxScan = require('./linux-scan.js');
 var macConnect = require('./mac-connect.js');
 var macScan = require('./mac-scan.js');
 var macGetCurrentConnections = require('./mac-current-connections');
+var macGetPowerStatus = require('./mac-power-status');
+var macSetPowerStatus = require('./mac-set-power');
 
 var config = {
     debug : false,
     iface : null
+};
+
+function notSupported() {
+    throw new Error("ERROR : operation not supported for the platform");
 };
 
 function init(options) {
@@ -48,6 +54,8 @@ function init(options) {
             connect = macConnect(config);
             scan = macScan(config);
             getCurrentConnections = macGetCurrentConnections(config);
+            getPowerStatus = macGetPowerStatus(config);
+            setPowerStatus = macSetPowerStatus(config);
             break;
         case "win32":
             connect = windowsConnect(config);
@@ -62,6 +70,8 @@ function init(options) {
     exports.connect = connect;
     exports.disconnect = disconnect;
     exports.getCurrentConnections = getCurrentConnections;
+    exports.getPowerStatus = getPowerStatus;
+    exports.setPowerStatus = setPowerStatus;
 }
 
 exports.init = init;
@@ -80,3 +90,11 @@ exports.disconnect = function () {
 exports.getCurrentConnections = function () {
     throw new Error("ERROR : use init before");
 };
+
+exports.getPowerStatus = function () {
+    throw new Error("ERROR : use init before");
+}
+
+exports.macSetPowerStatus = function () {
+    throw new Error("ERROR : use init before");
+}
